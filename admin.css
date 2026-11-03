@@ -1,0 +1,995 @@
+/* =========================================================
+   admin.css — shared styles for every admin view
+   Load order:
+     <link rel="stylesheet" href="styles.css" />
+     <link rel="stylesheet" href="admin.css" />
+   ========================================================= */
+
+:root {
+  --brand: #e67e22;
+  --brand-dark: #d35400;
+  --brand-soft: #fdf1e7;
+  --ink: #2c3e50;
+  --text: #333;
+  --muted: #777;
+  --line: #eee;
+  --surface: #ffffff;
+  --danger: #e74c3c;
+  --success: #27ae60;
+  --info: #3498db;
+  --warning: #f39c12;
+  --radius: 10px;
+  --shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+}
+/* =========================================================
+   Sticky footer layout
+   header  – natural height (also position: sticky)
+   main    – grows to fill leftover space
+   footer  – pinned to the bottom of the viewport
+   ========================================================= */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+body > main {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+body > footer {
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   Header + Navigation (identical on every admin page)
+   ========================================================= */
+.admin-header {
+  background: var(--surface);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.admin-header .header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.admin-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--brand);
+  white-space: nowrap;
+}
+
+.admin-title span {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding-left: 0.6rem;
+  border-left: 1px solid #e0e0e0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  vertical-align: middle;
+}
+
+.admin-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.admin-nav a {
+  padding: 0.5rem 0.9rem;
+  border-radius: 6px;
+  color: #555;
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+
+.admin-nav a:hover {
+  color: var(--brand);
+  background: var(--brand-soft);
+}
+
+.admin-nav a.active {
+  background: var(--brand);
+  color: #fff;
+}
+
+/* Logout replaces the old "Customer Login" button */
+.logout-btn {
+  margin-left: 0.6rem;
+  padding: 0.5rem 1.1rem;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--brand);
+  background: transparent;
+  border: 1px solid var(--brand);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s;
+}
+
+.logout-btn:hover {
+  background: var(--brand);
+  color: #fff;
+}
+
+/* =========================================================
+   Page toolbar (refresh lives here, NOT in the nav)
+   ========================================================= */
+.page-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #555;
+  background: var(--surface);
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.25s, border-color 0.25s, background 0.25s;
+}
+
+.refresh-btn:hover:not(:disabled) {
+  color: var(--brand);
+  border-color: var(--brand);
+  background: var(--brand-soft);
+}
+
+.refresh-btn:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+/* =========================================================
+   Sections / cards
+   ========================================================= */
+.admin-section {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+}
+
+.admin-section > h2 {
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--brand);
+}
+
+.admin-section > h3 {
+  margin: 0 0 1rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* =========================================================
+   Buttons
+   ========================================================= */
+.btn,
+.btn-primary {
+  padding: 0.6rem 1.15rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--brand);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+
+.btn:hover,
+.btn-primary:hover {
+  background: var(--brand-dark);
+}
+
+.btn.primary { background: var(--info); }
+.btn.primary:hover { background: #2980b9; }
+
+.btn.secondary { background: #95a5a6; }
+.btn.secondary:hover { background: #7f8c8d; }
+
+/* =========================================================
+   Forms
+   ========================================================= */
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--brand) !important;
+  box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.15);
+}
+
+.form-group { margin-bottom: 1rem; }
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+/* ---------- Add-item form (admin.html) ---------- */
+.add-item-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 1.5rem;
+}
+
+.add-item-form input[type="text"],
+.add-item-form input[type="number"] {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.add-item-form .btn-primary { grid-column: 1 / -1; }
+
+.file-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.file-field input[type="file"] {
+  padding: 0.55rem;
+  font-family: inherit;
+  font-size: 0.82rem;
+  background: #fafafa;
+  border: 1px dashed #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* =========================================================
+   Menu management cards (admin.html)
+   ========================================================= */
+#adminMenuItems.menu-items {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+#adminMenuItems .menu-item .item-info input {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.88rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+#adminMenuItems .menu-item .item-info button {
+  padding: 0.45rem 0.95rem;
+  margin-right: 0.4rem;
+  font-family: inherit;
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--info);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: filter 0.2s;
+}
+
+#adminMenuItems .menu-item .item-info button:hover { filter: brightness(0.9); }
+#adminMenuItems .menu-item .item-info button:last-of-type { background: var(--danger); }
+
+/* =========================================================
+   Tables (ordersAdmin.html, iv.html, report.html)
+   ========================================================= */
+.table-wrap,
+.table-responsive {
+  overflow-x: auto;
+}
+
+.data-table,
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.data-table thead th {
+  padding: 0.7rem 0.85rem;
+  text-align: left;
+  font-weight: 500;
+  white-space: nowrap;
+  color: #fff;
+  background: var(--ink);
+}
+
+.data-table tbody td {
+  padding: 0.7rem 0.85rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+.data-table tbody tr:hover { background: #fafafa; }
+
+.data-table .status-select {
+  padding: 0.3rem 0.4rem;
+  font-size: 0.85rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Row states */
+tr.row-low   { background: #fff8e6; }
+tr.row-empty { background: #fdecea; }
+
+/* Status pills */
+.status {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  text-transform: capitalize;
+}
+.status.pending   { background: #ffeb99; }
+.status.preparing { background: #99ccff; }
+.status.completed { background: #99ff99; }
+.status.cancelled { background: #ff9999; }
+
+/* =========================================================
+   Inventory page (iv.html)
+   ========================================================= */
+.inventory-controls { margin-bottom: 1rem; }
+
+.control-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.search-box {
+  display: flex;
+  margin-left: auto;
+}
+
+.search-box input {
+  width: 220px;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid #ddd;
+  border-right: none;
+  border-radius: 6px 0 0 6px;
+}
+
+.search-box button {
+  padding: 0.55rem 1rem;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--brand);
+  border: none;
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+
+.search-box button:hover { background: var(--brand-dark); }
+
+.filter-options {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.filter-options label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+}
+
+/* ---------- Inventory grid list ---------- */
+.inventory-list {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.inventory-header,
+.inventory-item {
+  display: grid;
+  grid-template-columns: 70px 2fr 1fr 1fr 1fr 1.5fr;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.9rem 1.25rem;
+}
+
+.inventory-header {
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.inventory-item {
+  border-bottom: 1px solid var(--line);
+  font-size: 0.92rem;
+}
+
+.inventory-item:last-child { border-bottom: none; }
+.inventory-item:hover { background: #fafafa; }
+
+/* ---------- Status indicators ---------- */
+.status-indicator {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-low { background: #ffeaa7; color: #b9770e; }
+.status-ok  { background: #d5f5e3; color: #1e8449; }
+
+/* ---------- Row actions ---------- */
+.action-btn {
+  padding: 0.32rem 0.6rem;
+  margin-right: 0.3rem;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--info);
+  background: #eaf4fc;
+  border: 1px solid #d4e7f7;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.action-btn:hover { background: var(--info); color: #fff; }
+
+.action-btn.delete {
+  color: var(--danger);
+  background: #fdecea;
+  border-color: #f9d6d1;
+}
+
+.action-btn.delete:hover { background: var(--danger); color: #fff; }
+
+/* ---------- Connection banner + debug ---------- */
+.connection-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: #f1f1f1;
+  color: var(--muted);
+  margin-right: auto;
+}
+
+.connection-status.connected { background: #d5f5e3; color: #1e8449; }
+.connection-status.error     { background: #fdecea; color: var(--danger); }
+
+.toggle-debug {
+  padding: 0;
+  font-family: inherit;
+  font-size: 0.82rem;
+  color: var(--info);
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.debug-info {
+  display: none;
+  margin-top: 0.75rem;
+  padding: 0.9rem 1rem;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  color: #555;
+  background: #f8f9fa;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.debug-info h4 { margin: 0 0 0.5rem; font-size: 0.85rem; }
+
+/* =========================================================
+   Modals (shared)
+   ========================================================= */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 1.75rem 2rem;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.modal-content h3 {
+  margin: 0 0 1.25rem;
+  font-size: 1.1rem;
+  color: var(--brand);
+}
+
+.close-modal {
+  position: absolute;
+  top: 0.75rem;
+  right: 1rem;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.close-modal:hover { color: var(--danger); }
+
+/* =========================================================
+   Notifications
+   ========================================================= */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1100;
+  padding: 0.85rem 1.25rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transform: translateY(-12px);
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.notification.success { background: var(--success); opacity: 1; transform: translateY(0); }
+.notification.error   { background: var(--danger);  opacity: 1; transform: translateY(0); }
+
+/* =========================================================
+   Loading states
+   ========================================================= */
+.loading {
+  padding: 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  margin: 0 auto 0.9rem;
+  border: 4px solid #f3f3f3;
+  border-top-color: var(--brand);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* =========================================================
+   Reports dashboard (report.html)
+   ========================================================= */
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  padding: 1.25rem;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.stat-card {
+  text-align: center;
+  border-top: 3px solid var(--brand);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+}
+
+.stat-value {
+  margin: 0.4rem 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ---------- Filters ---------- */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 170px;
+}
+
+.filter-group label {
+  margin-bottom: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.filter-group select,
+.filter-group input {
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+/* ---------- Tabs ---------- */
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid #e5e5e5;
+  overflow-x: auto;
+}
+
+.tab {
+  padding: 0.7rem 1.1rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--muted);
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.tab:hover { color: var(--brand); }
+
+.tab.active {
+  color: var(--brand);
+  border-bottom-color: var(--brand);
+  font-weight: 600;
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ---------- Charts ---------- */
+.chart-card,
+.card > h3 + .chart-container { margin-top: 0.5rem; }
+
+.card h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.chart-container {
+  position: relative;
+  height: 300px;
+}
+
+.chart-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ---------- Report tables ---------- */
+#salesTable,
+#inventoryTable,
+#transactionsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+#salesTable thead th,
+#inventoryTable thead th,
+#transactionsTable thead th {
+  padding: 0.65rem 0.8rem;
+  text-align: left;
+  font-weight: 500;
+  white-space: nowrap;
+  color: #fff;
+  background: var(--ink);
+}
+
+#salesTable tbody td,
+#inventoryTable tbody td,
+#transactionsTable tbody td {
+  padding: 0.65rem 0.8rem;
+  border-bottom: 1px solid var(--line);
+}
+
+#salesTable tbody tr:hover,
+#inventoryTable tbody tr:hover,
+#transactionsTable tbody tr:hover { background: #fafafa; }
+
+tr.low-stock    { background: #fff8e6; }
+tr.out-of-stock { background: #fdecea; }
+
+/* =========================================================
+   Footer
+   ========================================================= */
+.admin-footer {
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #fff;
+  background: #333;
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+@media (max-width: 900px) {
+  .admin-header .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .admin-nav { width: 100%; }
+  .logout-btn { margin-left: 0; }
+}
+
+@media (max-width: 768px) {
+  .add-item-form { grid-template-columns: 1fr; }
+  .admin-section { padding: 1.25rem; }
+
+  .page-toolbar { justify-content: stretch; flex-wrap: wrap; }
+  .page-toolbar .refresh-btn { width: 100%; justify-content: center; }
+
+  .control-buttons { flex-direction: column; align-items: stretch; }
+  .search-box { margin-left: 0; width: 100%; }
+  .search-box input { flex: 1; width: auto; }
+
+  .inventory-header { display: none; }
+
+  .inventory-item {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.35rem 0.75rem;
+    padding: 1rem 1.25rem;
+  }
+
+  .inventory-item > div:nth-child(2) { grid-column: 1 / -1; font-weight: 600; }
+  .inventory-item > div:last-child { grid-column: 1 / -1; margin-top: 0.4rem; }
+
+  .filters { flex-direction: column; }
+  .filter-group { min-width: 0; width: 100%; }
+  .chart-container { height: 250px; }
+}
+/* =========================================================
+   Order Tabs & Receipt Styles
+   ========================================================= */
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+}
+
+/* Receipt Modal specific styles */
+.receipt-modal-content {
+  max-width: 400px; /* Narrower, like a real receipt */
+  background: #f9f9f9;
+}
+
+.receipt-paper {
+  background: #fff;
+  padding: 2rem;
+  border: 1px dashed #ccc;
+  border-radius: 4px;
+  font-family: "Courier New", Courier, monospace; /* Thermal printer look */
+  color: #000;
+  margin-bottom: 1.5rem;
+}
+
+.receipt-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px dashed #000;
+  padding-bottom: 1rem;
+}
+
+.receipt-header h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #000;
+}
+
+.receipt-header p {
+  margin: 0.2rem 0 0;
+  font-size: 0.8rem;
+}
+
+.receipt-info {
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.receipt-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+}
+
+.receipt-table th {
+  border-bottom: 1px solid #000;
+  text-align: left;
+  padding-bottom: 0.5rem;
+  background: none;
+  color: #000;
+}
+
+.receipt-table td {
+  padding: 0.5rem 0;
+  border-bottom: 1px dotted #ccc;
+}
+
+.receipt-table th:nth-child(2),
+.receipt-table td:nth-child(2) { text-align: center; }
+.receipt-table th:nth-child(3),
+.receipt-table td:nth-child(3) { text-align: right; }
+
+.receipt-total {
+  text-align: right;
+  border-top: 2px dashed #000;
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+.receipt-total h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #000;
+}
+
+.receipt-footer {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.8rem;
+}
+
+.receipt-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+/* =========================================================
+   Print Styles (Hides everything except the receipt)
+   ========================================================= */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #receiptPrintArea, #receiptPrintArea * {
+    visibility: visible;
+  }
+  #receiptPrintArea {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    border: none;
+    padding: 0;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

@@ -3,119 +3,144 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gugu's Kitchen - Orders</title>
+    <title>Admin · Orders – Gugu's Kitchen</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="admin.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-      .header-content {
-        max-width: 1200px;
-        margin-top: 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 2rem;
-      }
-
-      header h1 {
-        color: #e67e22;
-        font-size: 1.8rem;
-      }
-
-      nav {
-        display: flex;
-        align-items: center;
-        gap: 2rem;
-      }
-
-      nav a {
-        text-decoration: none;
-        color: #555;
-        font-weight: 500;
-        transition: color 0.3s;
-      }
-
-      nav a.active {
-        color: #e67e22;
-        font-weight: 600;
-      }
-
-      nav a:hover {
-        color: #e67e22;
-      }
-
-      h1,
-      h2 {
-        color: #e67e22;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 1rem;
-      }
-      th,
-      td {
-        padding: 0.75rem;
-        border: 1px solid #ddd;
-        text-align: left;
-      }
-      th {
-        background-color: #f1f1f1;
-      }
-      tr:hover {
-        background-color: #f9f9f9;
-      }
-      button {
-        padding: 0.4rem 0.8rem;
-        margin-right: 0.3rem;
-        background-color: #e67e22;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: 0.3s;
-      }
-      button:hover {
-        background-color: #d35400;
-      }
-      .status-select {
-        padding: 0.3rem;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-      }
-    </style>
   </head>
   <body>
-    <header class="header-content">
-      <h1>Admin - Orders</h1>
-      <nav>
-        <a href="admin.html" class="login-nav-btn">Edit Menu</a>
-        <a href="ordersAdmin.html" class="login-nav-btn">View Orders</a>
-        <a href="iv.html" class="login-nav-btn">inventory</a>
-        <a href="report.html" class="login-nav-btn">Reports</a>
-        <a href="index.html" class="login-nav-btn">Customer Login</a>
-      </nav>
+    <!-- Shared admin header -->
+    <header class="admin-header">
+      <div class="header-content">
+        <h1 class="admin-title">Gugu's Kitchen <span>Admin</span></h1>
+        <nav class="admin-nav">
+          <a href="admin.html">Edit Menu</a>
+          <a href="ordersAdmin.html" class="active">View Orders</a>
+          <a href="iv.html">Inventory</a>
+          <a href="report.html">Reports</a>
+          <button type="button" id="logoutBtn" class="logout-btn">Logout</button>
+        </nav>
+      </div>
     </header>
 
     <main>
-      <section>
+      <!-- Toolbar -->
+      <div class="page-toolbar">
+        <button type="button" class="refresh-btn" data-refresh="loadOrders">
+          ↻ Refresh Orders
+        </button>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs" style="margin-bottom: 2rem;">
+        <button class="tab active" data-target="currentTab">Current Orders</button>
+        <button class="tab" data-target="historyTab">Order History</button>
+      </div>
+
+      <!-- Current Orders Tab -->
+      <section class="admin-section tab-content active" id="currentTab">
         <h2>Current Orders</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>User</th>
-              <th>Status</th>
-              <th>Total (R)</th>
-              <th>Created</th>
-              <th>Items</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="ordersTableBody"></tbody>
-        </table>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Status</th>
+                <th>Total (R)</th>
+                <th>Time</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="currentOrdersBody">
+              <tr><td colspan="6" style="text-align:center;">Loading orders…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Order History Tab -->
+      <section class="admin-section tab-content" id="historyTab">
+        <h2>Order History</h2>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Status</th>
+                <th>Total (R)</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="historyOrdersBody">
+              <tr><td colspan="6" style="text-align:center;">Loading orders…</td></tr>
+            </tbody>
+          </table>
+        </div>
       </section>
     </main>
 
+    <footer class="admin-footer">
+      <p>© 2023 Gugu's Kitchen. Admin Panel.</p>
+    </footer>
+
+    <div id="notification" class="notification"></div>
+
+    <!-- ========================================== -->
+    <!-- RECEIPT MODAL                              -->
+    <!-- ========================================== -->
+    <div id="receiptModal" class="modal">
+      <div class="modal-content receipt-modal-content">
+        <span class="close-modal" onclick="closeReceipt()">&times;</span>
+        
+        <!-- Printable Area -->
+        <div id="receiptPrintArea" class="receipt-paper">
+          <div class="receipt-header">
+            <h2>Gugu's Kitchen</h2>
+            <p>Order Statement / Receipt</p>
+          </div>
+          
+          <div class="receipt-info">
+            <p><strong>Order #:</strong> <span id="rcpOrderId"></span></p>
+            <p><strong>Date:</strong> <span id="rcpDate"></span></p>
+            <p><strong>Customer:</strong> <span id="rcpCustomer"></span></p>
+            <p><strong>Status:</strong> <span id="rcpStatus"></span></p>
+          </div>
+
+          <table class="receipt-table">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody id="rcpItemsBody">
+              <!-- Items injected here -->
+            </tbody>
+          </table>
+
+          <div class="receipt-total">
+            <h3>Total: R<span id="rcpTotal"></span></h3>
+          </div>
+          
+          <div class="receipt-footer">
+            <p>Thank you for dining with us!</p>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="receipt-actions no-print">
+          <button class="btn secondary" onclick="closeReceipt()">Close</button>
+          <button class="btn primary" onclick="window.print()">Print Receipt</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="admin-nav.js"></script>
     <script src="orders.js"></script>
   </body>
 </html>

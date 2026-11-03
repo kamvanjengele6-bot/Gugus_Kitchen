@@ -3,86 +3,139 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Reports</title>
-    <link rel="stylesheet" href="admin-report.css" />
+    <title>Admin · Reports – Gugu's Kitchen</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="admin.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   </head>
   <body>
-    <h1>📊 Admin Reports Dashboard</h1>
+    <!-- ===== Shared admin header ===== -->
+    <header class="admin-header">
+      <div class="header-content">
+        <h1 class="admin-title">Gugu's Kitchen <span>Admin</span></h1>
+        <nav class="admin-nav">
+          <a href="admin.html">Edit Menu</a>
+          <a href="ordersAdmin.html">View Orders</a>
+          <a href="iv.html">Inventory</a>
+          <a href="admin-report.html" class="active">Reports</a>
+          <button type="button" id="logoutBtn" class="logout-btn">Logout</button>
+        </nav>
+      </div>
+    </header>
 
-    <!-- Summary Cards -->
-    <div class="summary">
-      <div class="card">
-        <h3>Total Users</h3>
-        <p id="totalUsers">0</p>
+    <main>
+      <!-- Refresh lives here, outside the nav -->
+      <div class="page-toolbar">
+        <button type="button" class="refresh-btn" data-refresh="loadReports">
+          ↻ Refresh Report
+        </button>
       </div>
-      <div class="card">
-        <h3>Admins</h3>
-        <p id="totalAdmins">0</p>
-      </div>
-      <div class="card">
-        <h3>Cashiers</h3>
-        <p id="totalCashiers">0</p>
-      </div>
-      <div class="card">
-        <h3>Customers</h3>
-        <p id="totalCustomers">0</p>
-      </div>
-      <div class="card">
-        <h3>Total Orders</h3>
-        <p id="totalOrders">0</p>
-      </div>
-      <div class="card">
-        <h3>Total Sales (R)</h3>
-        <p id="totalSales">0</p>
-      </div>
-      <div class="card">
-        <h3>Inventory Items</h3>
-        <p id="totalItems">0</p>
-      </div>
-      <div class="card">
-        <h3>Below Reorder</h3>
-        <p id="belowReorder">0</p>
-      </div>
-    </div>
 
-    <!-- Charts -->
-    <h2>Charts</h2>
-    <div class="charts">
-      <canvas id="usersChart"></canvas>
-      <canvas id="paymentChart"></canvas>
-      <canvas id="inventoryChart"></canvas>
-    </div>
+      <!-- Summary -->
+      <section class="admin-section">
+        <h2>Summary</h2>
+        <div class="report-summary">
+          <div class="report-card">
+            <h3>Total Users</h3>
+            <p id="totalUsers">0</p>
+          </div>
+          <div class="report-card">
+            <h3>Admins</h3>
+            <p id="totalAdmins">0</p>
+          </div>
+          <div class="report-card">
+            <h3>Cashiers</h3>
+            <p id="totalCashiers">0</p>
+          </div>
+          <div class="report-card">
+            <h3>Customers</h3>
+            <p id="totalCustomers">0</p>
+          </div>
+          <div class="report-card">
+            <h3>Total Orders</h3>
+            <p id="totalOrders">0</p>
+          </div>
+          <div class="report-card">
+            <h3>Total Sales (R)</h3>
+            <p id="totalSales">0</p>
+          </div>
+          <div class="report-card">
+            <h3>Inventory Items</h3>
+            <p id="totalItems">0</p>
+          </div>
+          <div class="report-card">
+            <h3>Below Reorder</h3>
+            <p id="belowReorder">0</p>
+          </div>
+        </div>
+      </section>
 
-    <!-- Tables -->
-    <h2>Inventory Table</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Unit</th>
-          <th>Quantity</th>
-          <th>Reorder Level</th>
-        </tr>
-      </thead>
-      <tbody id="inventoryTableBody"></tbody>
-    </table>
+      <!-- Charts -->
+      <section class="admin-section">
+        <h2>Charts</h2>
+        <div class="charts">
+          <div class="chart-card">
+            <h3>Users by role</h3>
+            <div class="chart-box"><canvas id="usersChart"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <h3>Payment methods</h3>
+            <div class="chart-box"><canvas id="paymentChart"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <h3>Stock levels</h3>
+            <div class="chart-box"><canvas id="inventoryChart"></canvas></div>
+          </div>
+        </div>
+      </section>
 
-    <h2>Recent Orders</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Order ID</th>
-          <th>User</th>
-          <th>Total</th>
-          <th>Date</th>
-        </tr>
-      </thead>
-      <tbody id="ordersTableBody"></tbody>
-    </table>
+      <!-- Inventory -->
+      <section class="admin-section">
+        <h2>Inventory</h2>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Unit</th>
+                <th>Quantity</th>
+                <th>Reorder Level</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryTableBody"></tbody>
+          </table>
+        </div>
+      </section>
 
+      <!-- Recent orders -->
+      <section class="admin-section">
+        <h2>Recent Orders</h2>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>User</th>
+                <th>Total</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="admin-footer">
+      <p>© 2023 Gugu's Kitchen. Admin Panel.</p>
+    </footer>
+
+    <script src="admin-nav.js"></script>
     <script src="admin-report.js"></script>
   </body>
 </html>
-

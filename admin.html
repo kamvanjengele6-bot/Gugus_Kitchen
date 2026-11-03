@@ -3,35 +3,42 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Panel - Gugu's Kitchen</title>
+    <title>Admin · Edit Menu – Gugu's Kitchen</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="admin.css" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   </head>
   <body>
-    <header>
+    <!-- ===== Shared admin header ===== -->
+    <header class="admin-header">
       <div class="header-content">
-        <h1>Admin Panel</h1>
-        <nav>
-          <!-- <a href="menu.html">Back to Menu</a> -->
-          <!-- <a href="admin.html" class="login-nav-btn">Edit Menu</a> -->
-          <a href="ordersAdmin.html" class="login-nav-btn">View Orders</a>
-          <a href="iv.html" class="login-nav-btn">inventory</a>
-          <a href="report.html" class="login-nav-btn">Reports</a>
-
-          <a href="index.html" class="login-nav-btn">Customer Login</a>
+        <h1 class="admin-title">Gugu's Kitchen <span>Admin</span></h1>
+        <nav class="admin-nav">
+          <a href="admin.html" class="active">Edit Menu</a>
+          <a href="ordersAdmin.html">View Orders</a>
+          <a href="iv.html">Inventory</a>
+          <a href="report.html">Reports</a>
+          <button type="button" id="logoutBtn" class="logout-btn">Logout</button>
         </nav>
       </div>
     </header>
 
     <main>
-      <!-- Add New Item Form -->
-      <section>
+      <!-- Refresh lives here, outside the nav -->
+      <div class="page-toolbar">
+        <button type="button" class="refresh-btn" data-refresh="fetchMenu">
+          ↻ Refresh Menu
+        </button>
+      </div>
+
+      <!-- Add New Item -->
+      <section class="admin-section">
         <h2>Add New Menu Item</h2>
-        <form id="addItemForm">
+        <form id="addItemForm" class="add-item-form">
           <input type="text" id="name" placeholder="Item Name" required />
           <input
             type="text"
@@ -44,36 +51,40 @@
             id="price"
             placeholder="Price"
             step="0.01"
+            min="0"
             required
           />
           <input type="text" id="category" placeholder="Category" required />
-          <form action="/upload" method="POST" enctype="multipart/form-data">
-  <label for="image">Choose an image</label>
-  <input
-    id="image"
-    name="image"
-    type="file"
-    accept="image/*"
-    required
-  />
-          <input type="text" id="imageUrl" placeholder="Image bucket" required />
-          <button type="submit">Add Item</button>
+          <input
+            type="text"
+            id="imageUrl"
+            placeholder="Image URL / bucket path"
+            required
+          />
+          <!-- Upload isn't wired to a backend yet; the URL field above is what gets saved -->
+          <label class="file-field" for="image">
+            <span>Optional: choose an image</span>
+            <input id="image" name="image" type="file" accept="image/*" />
+          </label>
+
+          <button type="submit" class="btn-primary">Add Item</button>
         </form>
       </section>
 
       <!-- Menu Management -->
-      <section>
+      <section class="admin-section">
         <h2>Manage Menu Items</h2>
         <div id="adminMenuItems" class="menu-items">
-          <!-- Items with Update & Delete buttons will load here -->
+          <!-- Items with Update & Delete buttons are loaded by admin.js -->
         </div>
       </section>
     </main>
 
-    <footer>
+    <footer class="admin-footer">
       <p>© 2023 Gugu's Kitchen. Admin Panel.</p>
     </footer>
 
+    <script src="admin-nav.js"></script>
     <script src="admin.js"></script>
   </body>
 </html>
